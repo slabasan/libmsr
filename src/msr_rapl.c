@@ -650,12 +650,16 @@ static void create_rapl_data_batch(uint64_t *rapl_flags, struct rapl_data *rapl)
     if (*rapl_flags & PP0_PERF_STATUS)
     {
         rapl->pp0_perf_count = (uint64_t **) libmsr_calloc(sockets, sizeof(uint64_t *));
+#ifndef IS_ARCH_57
         load_socket_batch(MSR_PP0_PERF_STATUS, rapl->pp0_perf_count, RAPL_DATA);
+#endif
     }
     if (*rapl_flags & PP0_POLICY)
     {
         rapl->pp0_policy = (uint64_t **) libmsr_calloc(sockets, sizeof(uint64_t));
+#ifndef IS_ARCH_57
         load_socket_batch(MSR_PP0_POLICY, rapl->pp0_policy, RAPL_DATA);
+#endif
     }
     if (*rapl_flags & PP1_ENERGY_STATUS)
     {
@@ -665,12 +669,16 @@ static void create_rapl_data_batch(uint64_t *rapl_flags, struct rapl_data *rapl)
         rapl->old_pp1_joules = (double *) libmsr_calloc(sockets, sizeof(double));
         rapl->pp1_delta_joules = (double *) libmsr_calloc(sockets, sizeof(double));
         rapl->pp1_watts = (double *) libmsr_calloc(sockets, sizeof(double));
+#ifndef IS_ARCH_57
         load_socket_batch(MSR_PP1_ENERGY_STATUS, rapl->pp1_bits, RAPL_DATA);
+#endif
     }
     if (*rapl_flags & PP1_POLICY)
     {
         rapl->pp1_policy = (uint64_t **) libmsr_calloc(sockets, sizeof(uint64_t));
+#ifndef IS_ARCH_57
         load_socket_batch(MSR_PP1_POLICY, rapl->pp1_policy, RAPL_DATA);
+#endif
     }
     if (*rapl_flags & DRAM_ENERGY_STATUS)
     {
@@ -984,7 +992,9 @@ int set_pp_rapl_limit(const unsigned socket, struct rapl_limit *limit0, struct r
             return -1;
         }
         pp1_limit |= limit1->bits | (1LL << 15);
+#ifndef IS_ARCH_57
         write_msr_by_coord(socket, 0, 0, MSR_PP1_POWER_LIMIT, pp1_limit);
+#endif
     }
     else if (limit1 != NULL)
     {
@@ -1068,7 +1078,9 @@ int set_pp_rapl_policies(const unsigned socket, uint64_t *pp0, uint64_t *pp1)
             libmsr_error_handler("set_pp_rapl_policies(): PP0 domain policy is too large, valid values are 0-31", LIBMSR_ERROR_INVAL, getenv("HOSTNAME"), __FILE__, __LINE__);
             return -1;
         }
+#ifndef IS_ARCH_57
         write_msr_by_coord(socket, 0, 0, MSR_PP0_POLICY, *pp0);
+#endif
     }
     else if (pp0 != NULL)
     {
@@ -1083,7 +1095,9 @@ int set_pp_rapl_policies(const unsigned socket, uint64_t *pp0, uint64_t *pp1)
             libmsr_error_handler("set_pp_rapl_limit(): PP1 domain policy is too large, valid values are 0-31", LIBMSR_ERROR_INVAL, getenv("HOSTNAME"), __FILE__, __LINE__);
             return -1;
         }
+#ifndef IS_ARCH_57
         write_msr_by_coord(socket, 0, 0, MSR_PP1_POLICY, *pp1);
+#endif
     }
     else if (pp1 != NULL)
     {
@@ -1109,7 +1123,9 @@ int get_pp_rapl_policies(const unsigned socket, uint64_t *pp0, uint64_t *pp1)
     /* Make sure the pp0 policy register exists. */
     if ((pp0 != NULL) && (*rapl_flags & PP0_POLICY))
     {
+#ifndef IS_ARCH_57
         read_msr_by_coord(socket, 0, 0, MSR_PP0_POLICY, pp0);
+#endif
     }
     else if (pp0 != NULL)
     {
@@ -1119,7 +1135,9 @@ int get_pp_rapl_policies(const unsigned socket, uint64_t *pp0, uint64_t *pp1)
     /* Make sure the pp1 policy register exists. */
     if ((pp1 != NULL) && (*rapl_flags & PP1_POLICY))
     {
+#ifndef IS_ARCH_57
         read_msr_by_coord(socket, 0, 0, MSR_PP1_POLICY, pp1);
+#endif
     }
     else if (pp1 != NULL)
     {
@@ -1206,7 +1224,9 @@ int get_pp_rapl_limit(const unsigned socket, struct rapl_limit *limit0, struct r
     /* Make sure the pp0 power limit register exists. */
     if ((limit0 != NULL) && (*rapl_flags & PP0_POWER_LIMIT))
     {
+#ifndef IS_ARCH_57
         read_msr_by_coord(socket, 0, 0, MSR_PP0_POWER_LIMIT, &(limit0->bits));
+#endif
         calc_std_rapl_limit(socket, limit0);
     }
     else if (limit0 != NULL)
@@ -1217,7 +1237,9 @@ int get_pp_rapl_limit(const unsigned socket, struct rapl_limit *limit0, struct r
     /* Make sure the pp1 power limit register exists. */
     if ((limit1 != NULL) && (*rapl_flags & PP1_POWER_LIMIT))
     {
+#ifndef IS_ARCH_57
         read_msr_by_coord(socket, 0, 0, MSR_PP1_POWER_LIMIT, &(limit1->bits));
+#endif
         calc_std_rapl_limit(socket, limit1);
     }
     else if (limit1 != NULL)

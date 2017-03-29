@@ -48,6 +48,7 @@
 #include "libmsr_debug.h"
 #include "libmsr_error.h"
 
+#ifndef IS_ARCH_57
 /// @brief Load batch operations for the integrated memory controller (iMC).
 ///
 /// @param [in] offt Address of uncore register to load.
@@ -707,3 +708,4 @@ int print_pmon_ctrs(void)
     }
     return 0;
 }
+#endif

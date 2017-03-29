@@ -38,6 +38,7 @@
 
 #include "master.h"
 
+#ifndef IS_ARCH_57
 /* Integrated Memory Controller (iMC) CSRs */
 
 #define NUMCTRS 8
@@ -232,4 +233,5 @@ int print_mem_page_miss_from_ctr(const unsigned pre,
 /// @return 0 if successful, else -1 if init_pmon_ctrs() fails.
 int print_pmon_ctrs(void);
 
+#endif
 #endif

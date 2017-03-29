@@ -451,10 +451,12 @@ static void init_unc_perfevtsel(struct unc_perfevtsel *uevt)
         uevt->c2 = (uint64_t **) libmsr_calloc(sockets, sizeof(uint64_t *));
         uevt->c3 = (uint64_t **) libmsr_calloc(sockets, sizeof(uint64_t *));
         allocate_batch(UNCORE_EVTSEL, 4 * sockets);
+#ifndef IS_ARCH_57
         load_socket_batch(MSR_PCU_PMON_EVNTSEL0, uevt->c0, UNCORE_EVTSEL);
         load_socket_batch(MSR_PCU_PMON_EVNTSEL1, uevt->c1, UNCORE_EVTSEL);
         load_socket_batch(MSR_PCU_PMON_EVNTSEL2, uevt->c2, UNCORE_EVTSEL);
         load_socket_batch(MSR_PCU_PMON_EVNTSEL3, uevt->c3, UNCORE_EVTSEL);
+#endif
         init = 1;
     }
 }
@@ -474,10 +476,12 @@ static void init_unc_counters(struct unc_counters *uc)
         uc->c2 = (uint64_t **) libmsr_calloc(sockets, sizeof(uint64_t *));
         uc->c3 = (uint64_t **) libmsr_calloc(sockets, sizeof(uint64_t *));
         allocate_batch(UNCORE_COUNT, 4 * sockets);
+#ifndef IS_ARCH_57
         load_socket_batch(MSR_PCU_PMON_CTR0, uc->c0, UNCORE_COUNT);
         load_socket_batch(MSR_PCU_PMON_CTR1, uc->c1, UNCORE_COUNT);
         load_socket_batch(MSR_PCU_PMON_CTR2, uc->c2, UNCORE_COUNT);
         load_socket_batch(MSR_PCU_PMON_CTR3, uc->c3, UNCORE_COUNT);
+#endif
         init = 1;
     }
 }

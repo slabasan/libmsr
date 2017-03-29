@@ -244,7 +244,9 @@ int get_turbo_ratio_limit(const unsigned socket, struct turbo_limit_data *info, 
     /* Check if MSR_TURBO_RATIO_LIMIT1 exists on this platform. */
     if (*rapl_flags & TURBO_RATIO_LIMIT1)
     {
+#ifndef IS_ARCH_57
         read_msr_by_coord(socket, 0, 0, MSR_TURBO_RATIO_LIMIT1, &(info2->bits));
+#endif
         calc_max_turbo_ratio(socket, NULL, info2);
     }
     else

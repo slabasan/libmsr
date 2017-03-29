@@ -69,9 +69,13 @@ static void init_core_cres(struct core_cres *ccr)
     ccr->core_c6 = (uint64_t **) libmsr_calloc(cores, sizeof(uint64_t *));
     ccr->core_c7 = (uint64_t **) libmsr_calloc(cores, sizeof(uint64_t *));
     allocate_batch(CORE_CRES, 3 * cores);
+#ifndef IS_ARCH_57
     load_core_batch(MSR_CORE_C3_RESIDENCY, ccr->core_c3, CORE_CRES);
     load_core_batch(MSR_CORE_C6_RESIDENCY, ccr->core_c6, CORE_CRES);
     load_core_batch(MSR_CORE_C7_RESIDENCY, ccr->core_c7, CORE_CRES);
+#else
+    load_core_batch(MSR_CORE_C6_RESIDENCY, ccr->core_c6, CORE_CRES);
+#endif
 }
 
 void dump_misc_enable(struct misc_enable *s)

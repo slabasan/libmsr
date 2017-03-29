@@ -576,7 +576,9 @@ int get_pkg_therm2_ctl(void)
     therm2_ctl_storage(&thermctl);
     for (i = 0; i < sockets; i++)
     {
+#ifndef IS_ARCH_57
         ret = read_msr_by_coord(i, 0, 0, MSR_THERM2_CTL, &thermctl[i]);
+#endif
         if (ret)
         {
             return ret;

@@ -46,6 +46,7 @@
 #include "libmsr_debug.h"
 #include "libmsr_error.h"
 
+#ifndef IS_ARCH_57
 /// @brief Retrieve file descriptor for uncore register.
 ///
 /// @return Unique file descriptor, else NULL.
@@ -284,3 +285,4 @@ int do_csr_batch_op(const int batchnum)
     /// @todo Debug stuff here.
     return 0;
 }
+#endif

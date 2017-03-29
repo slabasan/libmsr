@@ -43,6 +43,7 @@
 #include <sys/mman.h>
 #include <unistd.h>
 
+#ifndef IS_ARCH_57
 #define CSRSAFE_8086_BATCH _IOWR('a', 0x05, struct csr_batch_array)
 #define CSR_FILENAME_SIZE 128
 #define CSR_MODULE "/dev/cpu/csr_safe"
@@ -193,4 +194,5 @@ int create_csr_batch_op(off_t csr,
 /// allocation is for 0 or less operations.
 int do_csr_batch_op(const int batchnum);
 
+#endif
 #endif
